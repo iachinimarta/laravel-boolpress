@@ -11,11 +11,10 @@
             <li>Category: {{$post->category?$post->category->name:'NULL'}}</li>
             <li>
                 @foreach ($post->tags as $tag)
-                    {{$tag->name}};                    
-                @endforeach
+                    <span>{{$tag->name}};</span>                  
+                @endforeach   
             </li>
         </ul>
-
         <button class="btn btn-info"><a href="{{route('admin.posts.index')}}"><-</a></button>
     </div>
 @endsection
