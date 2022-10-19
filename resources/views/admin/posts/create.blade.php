@@ -1,0 +1,78 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <form action="{{route('admin.posts.store')}}" method="POST">
+
+            @csrf
+
+            <div class="mb-3">
+                <label for="title" class="form-label">Post Title</label>
+                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" required max="50" value="{{old('title')}}">
+            </div>
+
+            @error('title')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>
+            @enderror
+
+            <div class="mb-4">
+                <label for="category_id">Category</label>
+                <select name="category_id" class="form-control @error('category_id') is-invalid @enderror" id="category_id">
+                    <option {{(old('category_id')=="")?'selected':''}} value="">Nessuna categoria</option>
+                    @foreach ($categories as $category)
+                        <option {{(old('category_id')==$category->id)?'selected':''}} value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+
+                @error('category_id')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            
+            </div>
+
+            @error('category_id')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>
+            @enderror
+
+            <div class="form-check mb-4">
+                @foreach ($tags as $tag)
+                    <input 
+                    {{(in_array($tag->id, old('tags', [])))?'checked':''}} 
+                    name="tags[]" 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    value="{{$tag->id}}" 
+                    id="tag_{{$tag->id}}">
+                    <label class="form-check-label mr-4" for="tag_{{$tag->id}}">{{$tag->name}}</label>
+                @endforeach
+            </div>
+
+            @error('tags')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>
+            @enderror
+
+            <div class="form-floating mb-4">
+                <label for="floatingTextarea">Content</label>
+                <textarea class="form-control @error('content') is-invalid @enderror" placeholder="Insert content here" id="floatingTextarea" name="content" required>{{old('content')}}</textarea>        
+            </div>
+
+            @error('content')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>
+            @enderror
+            
+            <button class="btn btn-info"><a href="{{route('admin.posts.index')}}"><-</a></button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            </form>
+    </div>
+@endsection

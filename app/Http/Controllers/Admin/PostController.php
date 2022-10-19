@@ -1,0 +1,164 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Category;
+use App\Http\Controllers\Controller;
+use App\Post;
+use App\Tag;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+class PostController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $posts = Post::all();
+        return view('admin.posts.index', ['postRecuperati' => $posts]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {   
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('admin.posts.create', compact('categories', 'tags'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|max:50',
+            'content' => 'required|max:65535',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'exists:tags,id'
+        ]);
+
+        $data = $request->all();
+
+        $newPost = new Post();
+        $newPost->fill($data);
+
+        $slug = Str::slug($newPost->title, '-');      
+        $checkSlug = Post::where('slug', $slug)->first();
+        $counter = 1;
+
+        while($checkSlug) {
+            $slug = Str::slug($newPost->title . '-' . $counter, '-');
+            $counter++;
+            $checkSlug = Post::where('slug', $slug)->first();
+        };
+
+        $newPost->slug = $slug;
+
+        $newPost->save();
+
+        if (array_key_exists('tags', $data)) {
+            $newPost->tags()->sync($data['tags']);
+        }
+
+        return redirect()->route('admin.posts.index')->with('status', 'Post creato con successo!');
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $post = Post::find($id);
+        $categories = Category::all();
+        return view('admin.posts.show', ['post' => $post, 'categories' => $categories]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $post = Post::find($id);
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('admin.posts.edit', ['post' => $post, 'categories' => $categories, 'tags' => $tags]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|max:50',
+            'content' => 'required|max:65535',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'exists:tags,id'
+        ]);
+
+        $data = $request->all();
+
+        $updatedPost = Post::find($id);
+
+        if($updatedPost->title !== $data['title']) {
+            $slug = Str::slug($data['title'], '-');      
+            $checkSlug = Post::where('slug', $slug)->first();
+            $counter = 1;
+
+            while($checkSlug) {
+                $slug = Str::slug($data['title'] . '-' . $counter, '-');
+                $counter++;
+                $checkSlug = Post::where('slug', $slug)->first();
+            };
+
+            $data['slug'] = $slug;
+        }
+
+        $updatedPost->update($data);
+
+        if (array_key_exists('tags', $data)) {
+            $updatedPost->tags()->sync($data['tags']);
+        } else {
+            $updatedPost->tags()->sync([]);
+        }
+
+        return redirect()->route('admin.posts.index')->with('status', 'Post modificato con successo!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $deletedPost = Post::find($id);
+        $deletedPost->tags()->sync([]);
+        $deletedPost->delete();
+        return redirect()->route('admin.posts.index')->with('status', 'Post eliminato con successo!');
+    }
+}
