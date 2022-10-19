@@ -15,10 +15,25 @@ class PostController extends Controller
                 'success' => true,
                 'results' => $posts
             ]
-            );
+        );
     }
 
     public function show($slug) {
         $post = Post::where('slug', $slug)->first();
+        if($post) {
+            return response()->json(
+                [
+                    'success' => true,
+                    'result' => $post
+                ]
+            );
+        } else {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Post not found!'
+                ]
+            );
+        }  
     }
 }
