@@ -2046,7 +2046,25 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'ContactsPage'
+  name: 'ContactsPage',
+  data: function data() {
+    return {
+      name: '',
+      email: '',
+      text: ''
+    };
+  },
+  methods: {
+    submitForm: function submitForm() {
+      axios.post('/api/contacts', {
+        'name': this.name,
+        'email': this.email,
+        'text': this.text
+      }).then(function (response) {
+        console.log(response);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -2079,9 +2097,15 @@ __webpack_require__.r(__webpack_exports__);
   name: 'PostDetail',
   methods: {
     getDetails: function getDetails() {
+      var _this = this;
+
       var slug = this.$route.params.slug;
       axios.get('/api/posts/' + slug).then(function (response) {
-        console.log(response);
+        _this.post = response.data.result;
+      })["catch"](function (error) {
+        _this.$router.push({
+          name: 'not-found'
+        });
       });
     }
   },
@@ -2381,7 +2405,106 @@ var render = function render() {
 
   return _c("div", {
     staticClass: "container"
-  }, [_vm._v("Pagina dei contatti")]);
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submitForm.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v("Name")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.name,
+      expression: "name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "name"
+    },
+    domProps: {
+      value: _vm.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.name = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label",
+    attrs: {
+      "for": "email"
+    }
+  }, [_vm._v("Email address")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.email,
+      expression: "email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      id: "email",
+      "aria-describedby": "emailHelp"
+    },
+    domProps: {
+      value: _vm.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.email = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "form-floating mb-5"
+  }, [_c("label", {
+    attrs: {
+      "for": "text"
+    }
+  }, [_vm._v("Message")]), _vm._v(" "), _c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.text,
+      expression: "text"
+    }],
+    staticClass: "form-control",
+    staticStyle: {
+      height: "100px"
+    },
+    attrs: {
+      placeholder: "Leave a message here",
+      id: "text"
+    },
+    domProps: {
+      value: _vm.text
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.text = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v("Submit")])])]);
 };
 
 var staticRenderFns = [];
@@ -53462,8 +53585,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _views_App__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./views/App */ "./resources/js/views/App.vue");
 /* harmony import */ var _router_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./router.js */ "./resources/js/router.js");
-window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"); //window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 

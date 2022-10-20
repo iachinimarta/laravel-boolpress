@@ -10,7 +10,10 @@
                 const slug = this.$route.params.slug;
                 axios.get('/api/posts/' + slug)
                 .then((response) => {
-                    console.log(response);
+                    this.post = response.data.result;
+                })
+                .catch((error) => {
+                    this.$router.push({name: 'not-found'});
                 });
             }
         },
