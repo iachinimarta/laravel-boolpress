@@ -1,7 +1,7 @@
 <template>
     <div class="container">
 
-        <div v-if="success" class="elert alert-success" role="alert">
+        <div v-if="success" class="alert alert-success" role="alert">
             Messaggio inviato correttamente
         </div>
 
@@ -19,7 +19,7 @@
                 <textarea class="form-control" placeholder="Leave a message here" id="text" style="height: 100px" v-model="text"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary" :disabled="sending">Submit</button>
+            <button type="submit" class="btn btn-primary" :disabled="sending">{{sending?'Sending in progress, please wait...':'Send'}}</button>
         </form>
     </div>
 </template>

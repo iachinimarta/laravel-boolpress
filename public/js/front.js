@@ -2111,6 +2111,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'PostDetail',
+  data: function data() {
+    return {
+      post: null
+    };
+  },
   methods: {
     getDetails: function getDetails() {
       var _this = this;
@@ -2118,11 +2123,11 @@ __webpack_require__.r(__webpack_exports__);
       var slug = this.$route.params.slug;
       axios.get('/api/posts/' + slug).then(function (response) {
         _this.post = response.data.result;
-      })["catch"](function (error) {
-        _this.$router.push({
-          name: 'not-found'
-        });
-      });
+        console.log(_this.post);
+        console.log(_this.post.category);
+      }); // .catch((error) => {
+      //     this.$router.push({name: 'not-found'});
+      // });
     }
   },
   mounted: function mounted() {
@@ -2278,7 +2283,9 @@ var render = function render() {
     staticClass: "card-text"
   }, [_vm._v(_vm._s(_vm.truncateText(_vm.post.content, 50)))]), _vm._v(" "), _c("p", {
     staticClass: "card-text"
-  }, [_vm._v(_vm._s(_vm.post.category ? _vm.post.category.name : "undefined"))]), _vm._v(" "), _c("router-link", {
+  }, [_vm._v(_vm._s(_vm.post.category ? _vm.post.category.name : "undefined"))]), _vm._v(" "), _c("p", {
+    staticClass: "card-text"
+  }, [_vm._v(_vm._s(_vm.post.tag))]), _vm._v(" "), _c("router-link", {
     attrs: {
       to: {
         name: "post_detail",
@@ -2287,7 +2294,7 @@ var render = function render() {
         }
       }
     }
-  }, [_vm._v("Read post")])], 1)]);
+  }, [_vm._v("\n            Read post\n        ")])], 1)]);
 };
 
 var staticRenderFns = [];
@@ -2422,7 +2429,7 @@ var render = function render() {
   return _c("div", {
     staticClass: "container"
   }, [_vm.success ? _c("div", {
-    staticClass: "elert alert-success",
+    staticClass: "alert alert-success",
     attrs: {
       role: "alert"
     }
@@ -2526,7 +2533,7 @@ var render = function render() {
       type: "submit",
       disabled: _vm.sending
     }
-  }, [_vm._v("Submit")])])]);
+  }, [_vm._v(_vm._s(_vm.sending ? "Sending in progress, please wait..." : "Send"))])])]);
 };
 
 var staticRenderFns = [];
@@ -2576,10 +2583,37 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_vm._v("Detail")]);
+  return _c("div", [_vm.post ? _c("article", [_c("h1", [_vm._v(_vm._s(_vm.post.title)), _vm._l(_vm.post.tags, function (tag) {
+    return _c("span", {
+      key: tag.id,
+      staticClass: "badge text-bg-primary"
+    }, [_vm._v(_vm._s(tag.name))]);
+  })], 2), _vm._v(" "), _c("div", {
+    staticClass: "mb-2"
+  }, [_vm._v("\n            Category: " + _vm._s(_vm.post.category ? _vm.post.category.name : "Nessuna categoria") + "\n        ")]), _vm._v(" "), _c("h4", [_vm._v("Content:")]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.post.content))]), _vm._v(" "), _c("router-link", {
+    attrs: {
+      to: {
+        name: "blog"
+      }
+    }
+  }, [_vm._v("Lista dei post")])], 1) : _c("div", {
+    staticClass: "d-flex justify-content-center"
+  }, [_vm._m(0)])]);
 };
 
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "spinner-border",
+    attrs: {
+      role: "status"
+    }
+  }, [_c("span", {
+    staticClass: "sr-only"
+  }, [_vm._v("Loading...")])]);
+}];
 render._withStripped = true;
 
 

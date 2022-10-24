@@ -25,6 +25,7 @@ Route::middleware('auth')
         Route::get('/', 'HomeController@index');
         Route::resource('posts', 'PostController');
         Route::resource('categories', 'CategoryController');
+        Route::resource('tags', 'TagController');
     });
 
 Route::get('{any}', function() {

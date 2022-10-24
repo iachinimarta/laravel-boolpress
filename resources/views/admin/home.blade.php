@@ -8,6 +8,7 @@
         <ul>
             <li><a href="{{route('admin.posts.index')}}">Vai alla gestione dei post</a></li>
             <li><a href="{{route('admin.categories.index')}}">Vai alla gestione delle categorie</a></li>
+            <li><a href="{{route('admin.tags.index')}}">Vai alla gestione dei tags</a></li>
         </ul>
     </div>
 @endsection
