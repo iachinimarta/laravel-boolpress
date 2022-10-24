@@ -1,10 +1,27 @@
 <template>
     <div class="card col-12 mb-4">
         <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
+            <h4 class="card-title">{{ post.title }}</h4>
             <p class="card-text">{{truncateText(post.content, 50)}}</p>
-            <p class="card-text">{{post.category?post.category.name:'undefined'}}</p>
-            <p class="card-text">{{post.tag}}</p>
+
+            <div class="mb-4">
+
+                <div v-if="post.category">
+                    <p class="card-text mr-2">{{post.category.name}}</p>
+                </div>
+                <div v-else>
+                    <p class="card-text mr-2">No category</p>
+                </div>
+
+                <div v-if="post.tags != 0">
+                    <p v-for="(tag,index) in post.tags" :key="index" class="card-text">#{{tag.name}}</p>
+                </div>
+                <div v-else>
+                    <p class="card-text">No tag</p>
+                </div>
+
+            </div>
+
             <router-link :to="{
                 name: 'post_detail', 
                 params: {slug: post.slug}

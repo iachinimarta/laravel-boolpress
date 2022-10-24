@@ -2124,10 +2124,11 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/api/posts/' + slug).then(function (response) {
         _this.post = response.data.result;
         console.log(_this.post);
-        console.log(_this.post.category);
-      }); // .catch((error) => {
-      //     this.$router.push({name: 'not-found'});
-      // });
+      })["catch"](function (error) {
+        _this.$router.push({
+          name: 'not-found'
+        });
+      });
     }
   },
   mounted: function mounted() {
@@ -2277,15 +2278,24 @@ var render = function render() {
     staticClass: "card col-12 mb-4"
   }, [_c("div", {
     staticClass: "card-body"
-  }, [_c("h5", {
+  }, [_c("h4", {
     staticClass: "card-title"
   }, [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("p", {
     staticClass: "card-text"
-  }, [_vm._v(_vm._s(_vm.truncateText(_vm.post.content, 50)))]), _vm._v(" "), _c("p", {
+  }, [_vm._v(_vm._s(_vm.truncateText(_vm.post.content, 50)))]), _vm._v(" "), _c("div", {
+    staticClass: "mb-4"
+  }, [_vm.post.category ? _c("div", [_c("p", {
+    staticClass: "card-text mr-2"
+  }, [_vm._v(_vm._s(_vm.post.category.name))])]) : _c("div", [_c("p", {
+    staticClass: "card-text mr-2"
+  }, [_vm._v("No category")])]), _vm._v(" "), _vm.post.tags != 0 ? _c("div", _vm._l(_vm.post.tags, function (tag, index) {
+    return _c("p", {
+      key: index,
+      staticClass: "card-text"
+    }, [_vm._v("#" + _vm._s(tag.name))]);
+  }), 0) : _c("div", [_c("p", {
     staticClass: "card-text"
-  }, [_vm._v(_vm._s(_vm.post.category ? _vm.post.category.name : "undefined"))]), _vm._v(" "), _c("p", {
-    staticClass: "card-text"
-  }, [_vm._v(_vm._s(_vm.post.tag))]), _vm._v(" "), _c("router-link", {
+  }, [_vm._v("No tag")])])]), _vm._v(" "), _c("router-link", {
     attrs: {
       to: {
         name: "post_detail",
@@ -2583,14 +2593,16 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_vm.post ? _c("article", [_c("h1", [_vm._v(_vm._s(_vm.post.title)), _vm._l(_vm.post.tags, function (tag) {
-    return _c("span", {
+  return _c("div", [_vm.post ? _c("article", [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("div", {
+    staticClass: "mb-2 badge bg-primary text-light"
+  }, [_vm._v("\n            " + _vm._s(_vm.post.category ? _vm.post.category.name : "-") + "\n        ")]), _vm._v(" "), _vm.post.tags != 0 ? _c("div", _vm._l(_vm.post.tags, function (tag) {
+    return _c("div", {
       key: tag.id,
-      staticClass: "badge text-bg-primary"
-    }, [_vm._v(_vm._s(tag.name))]);
-  })], 2), _vm._v(" "), _c("div", {
-    staticClass: "mb-2"
-  }, [_vm._v("\n            Category: " + _vm._s(_vm.post.category ? _vm.post.category.name : "Nessuna categoria") + "\n        ")]), _vm._v(" "), _c("h4", [_vm._v("Content:")]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.post.content))]), _vm._v(" "), _c("router-link", {
+      staticClass: "badge bg-primary text-light"
+    }, [_vm._v("#" + _vm._s(tag.name))]);
+  }), 0) : _c("div", {
+    staticClass: "badge bg-primary text-light"
+  }, [_vm._v("Nessun tag")]), _vm._v(" "), _c("h4", [_vm._v("Content:")]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.post.content))]), _vm._v(" "), _c("router-link", {
     attrs: {
       to: {
         name: "blog"
