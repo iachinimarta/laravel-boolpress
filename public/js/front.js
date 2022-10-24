@@ -2051,17 +2051,33 @@ __webpack_require__.r(__webpack_exports__);
     return {
       name: '',
       email: '',
-      text: ''
+      text: '',
+      errors: {},
+      success: false,
+      sending: false
     };
   },
   methods: {
     submitForm: function submitForm() {
-      axios.post('/api/contacts', {
+      var _this = this;
+
+      this.sending = true;
+      axios.post('/api/provaUri', {
         'name': this.name,
         'email': this.email,
         'text': this.text
       }).then(function (response) {
-        console.log(response);
+        _this.success = response.data.success;
+        _this.sending = false;
+
+        if (_this.success) {
+          _this.errors = {};
+          _this.name = '';
+          _this.email = '';
+          _this.text = '';
+        } else {
+          _this.errors = response.data.errors;
+        }
       });
     }
   }
@@ -2405,7 +2421,12 @@ var render = function render() {
 
   return _c("div", {
     staticClass: "container"
-  }, [_c("form", {
+  }, [_vm.success ? _c("div", {
+    staticClass: "elert alert-success",
+    attrs: {
+      role: "alert"
+    }
+  }, [_vm._v("\n        Messaggio inviato correttamente\n    ")]) : _vm._e(), _vm._v(" "), _c("form", {
     on: {
       submit: function submit($event) {
         $event.preventDefault();
@@ -2502,7 +2523,8 @@ var render = function render() {
   })]), _vm._v(" "), _c("button", {
     staticClass: "btn btn-primary",
     attrs: {
-      type: "submit"
+      type: "submit",
+      disabled: _vm.sending
     }
   }, [_vm._v("Submit")])])]);
 };

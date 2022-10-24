@@ -4,7 +4,10 @@
             <h5 class="card-title">{{ post.title }}</h5>
             <p class="card-text">{{truncateText(post.content, 50)}}</p>
             <p class="card-text">{{post.category?post.category.name:'undefined'}}</p>
-            <router-link :to="{name: 'post_detail', params: {slug: post.slug}}">Read post</router-link>
+            <router-link :to="{
+                name: 'post_detail', 
+                params: {slug: post.slug}
+                }">Read post</router-link>
         </div>
     </div>
 </template>

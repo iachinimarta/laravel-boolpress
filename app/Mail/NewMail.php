@@ -29,6 +29,6 @@ class NewMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.NewMail', ['lead' => $this->lead]);
+        return $this->view('emails.new-mail');
     }
 }

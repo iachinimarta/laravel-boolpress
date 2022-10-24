@@ -28,7 +28,7 @@
                 </div>
             @enderror
             
-            <a class="btn btn-info href="{{route('admin.categories.index')}}"><-</a>
+            <a class="btn btn-info" href="{{route('admin.categories.index')}}"><-</a>
             <button type="submit" class="btn btn-primary">Submit</button>
 
             </form>
