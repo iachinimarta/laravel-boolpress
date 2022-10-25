@@ -2594,15 +2594,19 @@ var render = function render() {
       _c = _vm._self._c;
 
   return _c("div", [_vm.post ? _c("article", [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("div", {
+    staticClass: "mb-5"
+  }, [_c("span", {
     staticClass: "mb-2 badge bg-primary text-light"
-  }, [_vm._v("\n            " + _vm._s(_vm.post.category ? _vm.post.category.name : "-") + "\n        ")]), _vm._v(" "), _vm.post.tags != 0 ? _c("div", _vm._l(_vm.post.tags, function (tag) {
-    return _c("div", {
+  }, [_vm._v("\n                " + _vm._s(_vm.post.category ? _vm.post.category.name : "No category") + "\n            ")]), _vm._v(" "), _vm.post.tags != 0 ? _c("span", _vm._l(_vm.post.tags, function (tag) {
+    return _c("span", {
       key: tag.id,
       staticClass: "badge bg-primary text-light"
     }, [_vm._v("#" + _vm._s(tag.name))]);
-  }), 0) : _c("div", {
+  }), 0) : _c("span", {
     staticClass: "badge bg-primary text-light"
-  }, [_vm._v("Nessun tag")]), _vm._v(" "), _c("h4", [_vm._v("Content:")]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.post.content))]), _vm._v(" "), _c("router-link", {
+  }, [_vm._v("No tag")])]), _vm._v(" "), _c("div", {
+    staticClass: "mb-5"
+  }, [_c("h4", [_vm._v("Content:")]), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.post.content))])]), _vm._v(" "), _c("router-link", {
     attrs: {
       to: {
         name: "blog"

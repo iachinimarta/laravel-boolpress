@@ -2,16 +2,24 @@
     <div>
         <article v-if="post">
             <h1>{{post.title}}</h1>
-            <div class="mb-2 badge bg-primary text-light">
-                {{(post.category)?post.category.name : '-'}}
+
+            <div class="mb-5">
+                <span class="mb-2 badge bg-primary text-light">
+                    {{(post.category)?post.category.name : 'No category'}}
+                </span>
+
+                <span v-if="post.tags != 0">
+                    <span v-for="tag in post.tags" class="badge bg-primary text-light" :key="tag.id">#{{tag.name}}</span>  
+                </span> 
+                <span v-else class="badge bg-primary text-light">No tag</span>
             </div>
-            <div v-if="post.tags != 0">
-                <div v-for="tag in post.tags" class="badge bg-primary text-light" :key="tag.id">#{{tag.name}}</div>  
-            </div> 
-            <div v-else class="badge bg-primary text-light">Nessun tag</div>  
+            
             <!-- <img class="img-fluid mb-4" :src="post.cover" :alt="post.title" /> -->
-            <h4>Content:</h4>
-            <p>{{post.content}}</p>
+            <div class="mb-5">
+                <h4>Content:</h4>
+                <p>{{post.content}}</p>
+            </div>
+            
             <router-link :to="{name: 'blog'}">Lista dei post</router-link>
         </article>
         <div v-else class="d-flex justify-content-center">
